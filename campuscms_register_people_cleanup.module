@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ */
+function campuscms_register_people_cleanup_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_register_form') {
+    $form['account']['cas_name']['#access'] = FALSE;
+    $form['account']['mail']['#access'] = FALSE;
+    $form['account']['pass']['#access'] = FALSE;
+    $form['account']['pass']['#required'] = FALSE;
+    $form['account']['status']['#access'] = FALSE;
+    array_unshift($form['#validate'], 'campuscms_register_people_cleanup_user_register_validate');
+  }
+  elseif ($form_id == 'user_profile_form') {
+    $form['account']['cas_name']['#access'] = FALSE;
+    $form['account']['pass']['#access'] = FALSE;
+    $form['account']['status']['#access'] = FALSE;
+  }
+}
+
+function campuscms_register_people_cleanup_user_register_validate(&$form, &$form_state) {
+  $form_state['values']['pass'] = campuscms_register_people_cleanup_generate_password();
+  $form_state['values']['mail'] = $form_state['values']['name'] . '@ucmerced.edu';
+}
+
+/**
+ * Generate random password.
+ * Adapted from http://www.laughing-buddha.net/php/password
+ */
+function campuscms_register_people_cleanup_generate_password($length = 8) {
+  // start with a blank password
+  $password = "";
+
+  // define possible characters
+  $possible = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$#@*";
+
+  // we refer to the length of $possible a few times, so let's grab it now
+  $maxlength = strlen($possible);
+
+  // add random characters to $password until $length is reached
+  while (strlen($password) < $length) {
+
+    // pick a random character from the possible ones
+    $password .= substr($possible, mt_rand(0, $maxlength-1), 1);
+  }
+
+  // done!
+  return $password;
+}

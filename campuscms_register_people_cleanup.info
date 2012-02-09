@@ -1,0 +1,5 @@
+name = CampusCMS Register People Cleanup
+description = Hide fields and autofill values when creating users.
+package = "UC Merced"
+version = VERSION
+core = 7.x

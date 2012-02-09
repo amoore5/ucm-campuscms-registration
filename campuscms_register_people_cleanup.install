@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function campuscms_register_people_cleanup_install() {
+  $weight = db_select('system', 's')
+              ->fields('s', array('weight'))
+              ->condition('name', 'cas', '=')
+              ->execute()
+              ->fetchField();
+  db_update('system')
+    ->fields(array('weight' => $weight +1))
+    ->condition('name', 'campuscms_register_people_cleanup', '=')
+    ->execute();
+}
