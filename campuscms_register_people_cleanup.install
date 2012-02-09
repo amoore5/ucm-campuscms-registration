@@ -13,4 +13,19 @@ function campuscms_register_people_cleanup_install() {
     ->fields(array('weight' => $weight +1))
     ->condition('name', 'campuscms_register_people_cleanup', '=')
     ->execute();
+
+
+  variable_set('user_mail_register_admin_created_body', 'Hi [user:name],
+
+An administrator for the [site:name] site has created an account for you.
+
+Log In Instructions
+==============
+1) Go to [site:url]/user. You will be redirected to the UC Merced Single Sign On page.
+2) Enter your UCMNetID and password, then click the Login button. You will be redirected to your profile page on the [site:name] site.
+
+If you have any questions, email the Site Manager.
+
+Sincerely,
+The [site:name] Team');
 }
