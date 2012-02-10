@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function ucm_campuscms_registration_install() {
+  $weight = db_select('system', 's')
+              ->fields('s', array('weight'))
+              ->condition('name', 'cas', '=')
+              ->execute()
+              ->fetchField();
+  db_update('system')
+    ->fields(array('weight' => $weight +1))
+    ->condition('name', 'ucm_campuscms_registration', '=')
+    ->execute();
+}
